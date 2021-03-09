@@ -83,7 +83,7 @@ public class EmailModule extends ReactContextBaseJavaModule {
             String packageName = resolveInfo.activityInfo.packageName;
             Intent launchIntent = packageManager.getLaunchIntentForPackage(packageName);
 
-            Toast.makeText(getCurrentActivity().getApplicationContext(), packageName, Toast.LENGTH_SHORT).show()
+            Toast.makeText(getCurrentActivity().getApplicationContext(), packageName, Toast.LENGTH_SHORT).show();
             if (!packageName.contains("paypal") && launchIntent != null) {
                 emailAppLauncherIntents.add(launchIntent);
             }
