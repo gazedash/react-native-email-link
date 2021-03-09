@@ -5,6 +5,7 @@ import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Parcelable;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -65,16 +66,33 @@ public class EmailModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void compose(final String title, final String to, final String subject, final String body) {
+          List<Intent> emailAppLauncherIntents = new ArrayList<>();
         Intent send = new Intent(Intent.ACTION_SENDTO);
         String uriText = "mailto:" + Uri.encode(to) +
                 "?subject=" + Uri.encode(subject) +
                 "&body=" + Uri.encode(body);
         Uri uri = Uri.parse(uriText);
-        send.addCategory(Intent.CATEGORY_APP_EMAIL);
+        
+              PackageManager packageManager = getPackageManager();
+
+      //All installed apps that can handle email intent:
+      List<ResolveInfo> emailApps = packageManager.queryIntentActivities(emailAppIntent, PackageManager.MATCH_ALL);
+
+      for (ResolveInfo resolveInfo : emailApps) {
+        String packageName = resolveInfo.activityInfo.packageName;
+        Intent launchIntent = packageManager.getLaunchIntentForPackage(packageName);
+           if (!packageName.contains("paypal") && launchIntent != null) {
+          emailAppLauncherIntents.add(launchIntent);
+    }
+      }
+      
 
         send.setData(uri);
         Intent chooserIntent = Intent.createChooser(send, title);
         chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        
+      chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, emailAppLauncherIntents.toArray(new Parcelable[emailAppLauncherIntents.size()]));
+      startActivity(chooserIntent);
         
         getReactApplicationContext().startActivity(chooserIntent);
     }
