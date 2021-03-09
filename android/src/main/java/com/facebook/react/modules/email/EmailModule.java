@@ -70,10 +70,12 @@ public class EmailModule extends ReactContextBaseJavaModule {
                 "?subject=" + Uri.encode(subject) +
                 "&body=" + Uri.encode(body);
         Uri uri = Uri.parse(uriText);
+        send.addCategory(Intent.CATEGORY_APP_EMAIL);
 
         send.setData(uri);
         Intent chooserIntent = Intent.createChooser(send, title);
         chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        chooserIntent.addCategory(Intent.CATEGORY_APP_EMAIL);
         getReactApplicationContext().startActivity(chooserIntent);
     }
 
