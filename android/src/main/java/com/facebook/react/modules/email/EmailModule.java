@@ -75,7 +75,7 @@ public class EmailModule extends ReactContextBaseJavaModule {
         send.setData(uri);
         Intent chooserIntent = Intent.createChooser(send, title);
         chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        chooserIntent.addCategory(Intent.CATEGORY_APP_EMAIL);
+        
         getReactApplicationContext().startActivity(chooserIntent);
     }
 
