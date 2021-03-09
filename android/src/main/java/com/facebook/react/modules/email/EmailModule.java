@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
+import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -81,6 +82,8 @@ public class EmailModule extends ReactContextBaseJavaModule {
         for (ResolveInfo resolveInfo : emailApps) {
             String packageName = resolveInfo.activityInfo.packageName;
             Intent launchIntent = packageManager.getLaunchIntentForPackage(packageName);
+
+            Toast.makeText(getCurrentActivity().getApplicationContext(), packageName, Toast.LENGTH_SHORT).show()
             if (!packageName.contains("paypal") && launchIntent != null) {
                 emailAppLauncherIntents.add(launchIntent);
             }
