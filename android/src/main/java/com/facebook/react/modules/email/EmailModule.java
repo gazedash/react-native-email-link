@@ -80,7 +80,7 @@ public class EmailModule extends ReactContextBaseJavaModule {
         List<ResolveInfo> emailApps = packageManager.queryIntentActivities(send, PackageManager.MATCH_ALL);
 
         for (ResolveInfo resolveInfo : emailApps) {
-            String packageName = resolveInfo.activityInfo.packageName;
+            String packageName = resolveInfo.activityInfo.applicationInfo.packageName;
             Intent launchIntent = packageManager.getLaunchIntentForPackage(packageName);
 
             if (launchIntent != null) {
