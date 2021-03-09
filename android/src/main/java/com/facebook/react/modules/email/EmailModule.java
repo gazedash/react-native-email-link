@@ -77,7 +77,7 @@ public class EmailModule extends ReactContextBaseJavaModule {
         PackageManager packageManager = getCurrentActivity().getPackageManager();
 
         //All installed apps that can handle email intent:
-        List<ResolveInfo> emailApps = packageManager.queryIntentActivities(send, PackageManager.MATCH_ALL);
+        List<ResolveInfo> emailApps = packageManager.queryIntentActivities(send, 0);
 
         for (ResolveInfo resolveInfo : emailApps) {
             String packageName = resolveInfo.activityInfo.applicationInfo.packageName;
@@ -87,7 +87,8 @@ public class EmailModule extends ReactContextBaseJavaModule {
             Toast.makeText(getCurrentActivity().getApplicationContext(), packageName, Toast.LENGTH_SHORT).show();
 
             if (launchIntent != null) {
-//                String packageName = launchIntent.getPackage();
+                String packageName2 = launchIntent.getPackage();
+                Toast.makeText(getCurrentActivity().getApplicationContext(), packageName2, Toast.LENGTH_SHORT).show();
                 if (!packageName.contains("paypal")) {
                     emailAppLauncherIntents.add(launchIntent);
                 }
